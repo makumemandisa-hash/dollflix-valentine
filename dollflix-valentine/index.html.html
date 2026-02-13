@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dollflix Valentine for Soka</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+ body {
+   margin:0;
+   font-family: 'Arial', sans-serif;
+   background: linear-gradient(to bottom, #8b0000, #ff6f91, #32cd32);
+   overflow: hidden;
+ }
+
+ .glass {
+   backdrop-filter: blur(12px);
+   background: rgba(255,255,255,0.1);
+   border-radius: 20px;
+   border: 1px solid rgba(255,255,255,0.3);
+   box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+ }
+
+ .float {
+   animation: float 6s ease-in-out infinite;
+ }
+ @keyframes float {
+   0%,100% { transform: translateY(0px); }
+   50% { transform: translateY(-15px); }
+ }
+
+ .confetti-piece {
+   position: absolute;
+   width: 15px;
+   height: 15px;
+   pointer-events: none;
+   z-index: 50;
+   font-size: 1rem;
+   animation: confetti-fall linear infinite;
+ }
+ @keyframes confetti-fall {
+   0% { transform: translateY(-50px) rotate(0deg); }
+   100% { transform: translateY(110vh) rotate(360deg); }
+ }
+
+ .rugby-ball {
+   width: 80px;
+   position: fixed;
+   top: 20px;
+   right: 20px;
+   animation: float 5s ease-in-out infinite alternate;
+   z-index: 20;
+ }
+
+ .cinematic-text {
+   color: #fff;
+   font-size: 2rem;
+   text-align: center;
+   opacity: 0;
+   animation: fadeInOut 4s forwards;
+ }
+ @keyframes fadeInOut {
+   0% { opacity: 0; transform: scale(0.8);}
+   10%,90% { opacity: 1; transform: scale(1);}
+   100% { opacity: 0; transform: scale(1.1);}
+ }
+
+ #title {
+   font-size: 4rem;
+   font-weight: bold;
+   color: #ffcccc;
+   opacity: 0;
+   animation: fadeIn 2s forwards;
+   text-shadow: 2px 2px 8px black;
+ }
+ @keyframes fadeIn { to { opacity: 1; } }
+
+ #startScreen {
+   position: absolute;
+   inset: 0;
+   background: black;
+   z-index: 100;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   text-align: center;
+   color: white;
+   cursor: pointer;
+ }
+
+</style>
+</head>
+<body class="relative flex flex-col items-center justify-center min-h-screen">
+
+<!-- Tap-to-Start Overlay -->
+<div id="startScreen">
+ <div>
+   <h1 class="text-3xl font-bold mb-4">Tap to start your Dollflix Valentine 🎬❤️</h1>
+   <p class="text-pink-300">Soka, your movie experience awaits…</p>
+ </div>
+</div>
+
+<!-- Background Audio -->
+<audio id="bgAudio" loop>
+ <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Rugby Ball Floating -->
+<img src="https://cdn-icons-png.flaticon.com/512/207/207353.png" alt="Rugby Ball" class="rugby-ball">
+
+<!-- Cinematic Intro -->
+<div id="cinematic" class="absolute inset-0 flex flex-col items-center justify-center space-y-6 z-40">
+ <div id="title">Dollflix Presents…</div>
+ <div id="messages" class="space-y-4 mt-6"></div>
+</div>
+
+<!-- Main Valentine Container -->
+<div id="valentineContainer" class="glass float p-10 max-w-lg w-full text-center shadow-xl opacity-0">
+ <h1 class="text-4xl font-bold text-white mb-4">Soka, you've tackled my heart ❤️🏉</h1>
+ <p class="text-pink-200 mb-8">From: Doll 💖</p>
+
+ <img src="https://via.placeholder.com/300x200.png?text=3D+Romantic+Scene" alt="Romantic 3D" class="mx-auto rounded-lg mb-8 shadow-lg">
+
+ <div class="glass p-4 mb-6">
+   <p class="text-white text-lg mb-2">Although I can’t be with you right now, or gift you in person,</p>
+   <p class="text-pink-200 font-semibold">this is what I have for you ❤️🏉</p>
+ </div>
+
+ <h2 class="text-2xl text-white mb-4">Soka, will you be my Valentine?</h2>
+ <div class="flex justify-center gap-6">
+   <button id="yesBtn" class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg transform transition-all duration-300 hover:scale-105">Yes 💘</button>
+   <button id="noBtn" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-3 px-6 rounded-lg shadow-lg transform transition-all duration-300">No 😅</button>
+ </div>
+</div>
+
+<!-- Celebration -->
+<div id="celebration" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50 hidden flex-col">
+ <h1 class="text-5xl font-extrabold text-yellow-300 mb-6 animate-bounce">🎉 I knew you'd score! I love you, Soka! 🏆❤️</h1>
+ <div class="flex gap-4">
+   <img src="https://cdn-icons-png.flaticon.com/512/616/616408.png" alt="Trophy" class="w-24">
+   <img src="https://cdn-icons-png.flaticon.com/512/616/616408.png" alt="Trophy" class="w-24">
+   <img src="https://cdn-icons-png.flaticon.com/512/616/616408.png" alt="Trophy" class="w-24">
+ </div>
+</div>
+
+<script>
+// Start overlay
+const startScreen = document.getElementById('startScreen');
+const bgAudio = document.getElementById('bgAudio');
+startScreen.addEventListener('click', () => {
+ startScreen.style.display = 'none';
+ bgAudio.play();
+});
+
+// Cinematic messages
+const cinematicMessages = ["A story of ❤️ & 🏉","Starring… Soka","Directed by… Doll","Coming straight to your heart…"];
+const messagesDiv = document.getElementById('messages');
+let index = 0;
+function showNextMessage() {
+ if(index >= cinematicMessages.length){
+   document.getElementById('cinematic').style.display = 'none';
+   document.getElementById('valentineContainer').style.transition = "opacity 1s";
+   document.getElementById('valentineContainer').style.opacity = 1;
+   return;
+ }
+ const msg = document.createElement('div');
+ msg.classList.add('cinematic-text');
+ msg.textContent = cinematicMessages[index];
+ messagesDiv.appendChild(msg);
+ setTimeout(() => {
+   messagesDiv.removeChild(msg);
+   index++;
+   showNextMessage();
+ },3500);
+}
+setTimeout(showNextMessage,2000);
+
+// Confetti
+const colors=["❤️","💖","💘","🏉"];
+function createConfetti(){
+ const confetti=document.createElement('div');
+ confetti.classList.add('confetti-piece');
+ confetti.style.left=Math.random()*window.innerWidth+'px';
+ confetti.style.animationDuration=(Math.random()*3+2)+'s';
+ confetti.textContent=colors[Math.floor(Math.random()*colors.length)];
+ document.body.appendChild(confetti);
+ setTimeout(()=>confetti.remove(),5000);
+}
+setInterval(createConfetti,150);
+
+// Buttons
+const yesBtn=document.getElementById('yesBtn');
+const noBtn=document.getElementById('noBtn');
+const celebration=document.getElementById('celebration');
+yesBtn.addEventListener('click',()=>{celebration.style.display='flex';});
+function moveNoButton(){
+ const x=Math.random()*(window.innerWidth-noBtn.offsetWidth);
+ const y=Math.random()*(window.innerHeight-noBtn.offsetHeight);
+ noBtn.style.position='absolute';
+ noBtn.style.left=x+'px';
+ noBtn.style.top=y+'px';
+}
+noBtn.addEventListener('mouseover',moveNoButton);
+noBtn.addEventListener('touchstart',moveNoButton);
+</script>
+
+</body>
+</html>
